@@ -15,7 +15,7 @@ import javax.swing.table.TableRowSorter;
 
 public final class Main {
 	private JFrame _mainFrame;	
-	final static String srpath = "out.dat";
+	private String srpath = "out.dat";
 	private HRTableModel _tableModel;
 	private JTable _employeesTable;
 	private Department _localDep, _resDep;
@@ -103,14 +103,24 @@ public final class Main {
 	private void makeJMenuBar(){
 		_menuBar = new JMenuBar();
 	    JMenu _menu = new JMenu("Edit");
+	    JMenu _menuFile = new JMenu("File");
+	    _menuBar.add(_menuFile);
 	    _menuBar.add(_menu);
+	    
 	    JMenuItem _deleteMenuItem = new JMenuItem("Delete employee");
 	    _deleteMenuItem.setToolTipText("Delete employee");
 	    KeyStroke ctrlD = KeyStroke.getKeyStroke(KeyEvent.VK_D,InputEvent.CTRL_MASK);
 	    _deleteMenuItem.setAccelerator(ctrlD);
 	    _deleteAction = new DeleteEmployeeAction();
 	    _deleteMenuItem.addActionListener(_deleteAction);
+	    
+	    JMenuItem _openDepMenuItem = new JMenuItem("Open Department");
+	    _openDepMenuItem.setToolTipText("Open Department");
+	    KeyStroke ctrlO = KeyStroke.getKeyStroke(KeyEvent.VK_O,InputEvent.CTRL_MASK);
+	    _openDepMenuItem.setAccelerator(ctrlO);
+	    
 	    _menu.add(_deleteMenuItem);
+	    _menuFile.add(_openDepMenuItem);
 	}
 	
 	private void initialize() throws ClassNotFoundException, IOException{
