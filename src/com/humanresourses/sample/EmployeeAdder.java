@@ -69,11 +69,11 @@ public final class EmployeeAdder extends JDialog {
 		content.add(_EmployeeFathernameTF);
 		content.add(_EmployeePositionCB);
 		content.add(_EmployeeSalaryTF);
-		content.add(addBtn);
-		
+		content.add(addBtn);		
 		//=== Set window's attributes
 		setContentPane(content);
 		pack();
+		addBtn.requestFocusInWindow();  // focus on button to avoid clearing textedit info on initialising
 		setTitle("Add employee");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null); // center window		
@@ -96,10 +96,12 @@ public final class EmployeeAdder extends JDialog {
 	
 	static class MyFocusAdapter extends FocusAdapter{
 		private JTextField _jtf;
+		private String s;
 		
 		public MyFocusAdapter(JTextField _jtf) {
 			super();
 			this._jtf = _jtf;
+			s = _jtf.getText();
 		}
 
 		public void focusGained(FocusEvent arg0){
@@ -108,6 +110,11 @@ public final class EmployeeAdder extends JDialog {
 				_jtf.putClientProperty("init", Boolean.FALSE);
 			}
 			_jtf.setForeground(Color.black);
+		}
+		public void focusLost(FocusEvent arg0){
+			String s2 = _jtf.getText();
+			if (s2.equals(s2));
+				_jtf.setText(s);
 		}
 	}
 	

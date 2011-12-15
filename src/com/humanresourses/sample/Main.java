@@ -94,9 +94,13 @@ public final class Main {
 	@SuppressWarnings("serial")
 	class DeleteEmployeeAction extends AbstractAction {
 		  public void actionPerformed(ActionEvent actionEvent) {
-			  _localDep.remove(_employeesTable.getSelectedRow());
+			  int index = _employeesTable.getSelectedRow();
+			  _localDep.remove(index);
 			  refresh();
 			  writeDepartmentToFile(srpath);
+			  int size1 = _employeesTable.getRowCount();
+			  if (index<size1)
+			  	_employeesTable.getSelectionModel().setSelectionInterval(index, index);
 		  }
 	}
 	
@@ -169,9 +173,9 @@ public final class Main {
 		});
 		JPanel _managePanel = new JPanel();    
 		_managePanel.setLayout(new FlowLayout());
-		_managePanel.add(_restoreLastDepBtn);
 		_managePanel.add(_addEmployeeBtn);
 		_managePanel.add(_deleteEmployeeBtn);
+		_managePanel.add(_restoreLastDepBtn);
 		JScrollPane _jsp = new JScrollPane(_employeesTable);		
 		_mainFrame.setBounds(100, 100, 450, 300);
 		_mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
