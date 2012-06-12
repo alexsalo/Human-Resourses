@@ -1,5 +1,7 @@
 package com.humanresourses.sample;
 
+//Николай Констонтинович
+
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -113,7 +115,7 @@ public final class EmployeeAdder extends JDialog {
 		}
 		public void focusLost(FocusEvent arg0){
 			String s2 = _jtf.getText();
-			if (s2.equals(s2));
+			if (s2.equals(""))
 				_jtf.setText(s);
 		}
 	}

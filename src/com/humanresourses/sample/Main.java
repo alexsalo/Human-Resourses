@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.*;
 import java.io.*;
+import java.sql.Savepoint;
 
 import javax.swing.*;		
 import javax.swing.event.DocumentEvent;
@@ -25,6 +26,7 @@ public final class Main {
 	private DeleteEmployeeAction _deleteAction;
 	TableRowSorter<HRTableModel> _sorter;
 	JPanel _filterPanel;
+	final JFileChooser _fileOpenChooser = new JFileChooser(System.getProperty("user.dir"));
 	
 	public Main() throws ClassNotFoundException, IOException {
 		initialize();
@@ -99,8 +101,8 @@ public final class Main {
 			  refresh();
 			  writeDepartmentToFile(srpath);
 			  int size1 = _employeesTable.getRowCount();
-			  if (index<size1)
-			  	_employeesTable.getSelectionModel().setSelectionInterval(index, index);
+			  index = Math.min(index, size1-1);
+			  _employeesTable.getSelectionModel().setSelectionInterval(index, index);
 		  }
 	}
 	
@@ -122,8 +124,36 @@ public final class Main {
 	    _openDepMenuItem.setToolTipText("Open Department");
 	    KeyStroke ctrlO = KeyStroke.getKeyStroke(KeyEvent.VK_O,InputEvent.CTRL_MASK);
 	    _openDepMenuItem.setAccelerator(ctrlO);
+	    _openDepMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {		
+				int retVal = _fileOpenChooser.showOpenDialog(_mainFrame);
+//get system dirs!				//System.out.println(System.getProperties().toString());  
+				if (retVal == JFileChooser.APPROVE_OPTION){
+					File f = _fileOpenChooser.getSelectedFile();
+					System.out.println("Opening: " + f.getName() + ".");
+					srpath = f.getName();
+					_localDep = readDepartmentFromFile(srpath);
+					refresh();
+				}
+				else 
+					System.out.println("Open command cancelled by user.");
+			}
+		});
+	    
+	    JMenuItem _saveDepMenuItem = new JMenuItem("Save Department");
+	    _saveDepMenuItem.setToolTipText("Save Department");
+	    KeyStroke ctrlS = KeyStroke.getKeyStroke(KeyEvent.VK_S,InputEvent.CTRL_MASK);
+	    _saveDepMenuItem.setAccelerator(ctrlS);
+	    _saveDepMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	    
 	    _menu.add(_deleteMenuItem);
+	    _menuFile.add(_saveDepMenuItem);
 	    _menuFile.add(_openDepMenuItem);
 	}
 	
@@ -134,7 +164,7 @@ public final class Main {
 		JButton _deleteEmployeeBtn = new JButton("Delete employee");
 		JButton _restoreLastDepBtn = new JButton("Restore");
 		_restoreLastDepBtn.setToolTipText("Restore last loaded department");
-			
+		
 		_localDep = new Department("Local");;		
 		_localDep = readDepartmentFromFile(srpath);
 		_resDep = readDepartmentFromFile(srpath);
@@ -192,6 +222,7 @@ public final class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					//UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 					Main window = new Main();
 					window._mainFrame.setVisible(true);
 				} catch (Exception e) {
